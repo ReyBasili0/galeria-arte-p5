@@ -75,3 +75,45 @@
     justify-content: center;
     color: #6c757d;
 }
+
+/* Estilos mejorados para Práctica 4 */
+.gallery-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.gallery-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.ajax-loading {
+    display: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.security-badge {
+    background: #28a745;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.7em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+}
