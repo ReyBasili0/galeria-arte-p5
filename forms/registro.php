@@ -1,15 +1,11 @@
 <?php
 session_start();
-
-// Conexión directa a la base de datos
-$host = "localhost";
-$db_name = "galeria_arte";
-$username = "root";
-$password = "";
+require_once '../php/database.php';
 
 if($_POST){
     try {
-        $db = new PDO("mysql:host=$host;dbname=$db_name", $username, $password);
+        $database = new Database();
+        $db = $database->getConnection();
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
         $username = trim($_POST['username']);
