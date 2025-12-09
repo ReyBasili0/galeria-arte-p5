@@ -1,29 +1,29 @@
 <?php
 class Database {
-    // Valores por defecto (puedes sobrescribir mediante variables de entorno)
-    private $host;
-    private $db_name;
-    private $username;
-    private $password;
-    private $port;
+    private $db_path;
     public $conn;
 
     public function __construct(){
-        $this->host = getenv('DB_HOST') ?: "galeria-mysql-nat.mysql.database.azure.com";
-        $this->db_name = getenv('DB_NAME') ?: "galeria_arte";
-        $this->username = getenv('DB_USER') ?: "admin_galeria@galeria-mysql-nat";
-        $this->password = getenv('DB_PASS') ?: "TuContraseñaSegura123";
-        $this->port = getenv('DB_PORT') ?: 3306;
+        // En Railway, usa /data para archivos persistentes
+        $this->db_path = getenv('DB_PATH') ?: __DIR__ . '/../database/data.sqlite';
     }
 
     public function getConnection() {
         $this->conn = null;
         try {
-            $dsn = sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', $this->host, $this->port, $this->db_name);
-            $this->conn = new PDO($dsn, $this->username, $this->password, [
+            // DSN para SQLite
+            $dsn = 'sqlite:' . $this->db_path;
+            
+            $this->conn = new PDO($dsn, null, null, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_PERSISTENT => false,
+                PDO::ATTR_TIMEOUT => 30,
             ]);
+            
+            // Activar claves foráneas en SQLite
+            $this->conn->exec('PRAGMA foreign_keys = ON;');
+            
         } catch(PDOException $exception) {
             error_log("DB connection error: " . $exception->getMessage());
             echo "Error temporal en la base de datos. Por favor intenta más tarde.";
